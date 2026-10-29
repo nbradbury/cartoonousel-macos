@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Title + subtitle on the left; counter, Add and Remove on the right.
+/// Title + subtitle on the left; counter, Add strips, Add Photos and Remove on the right.
 @MainActor
 struct HeaderView: View {
     /// Extra top inset so the title clears the traffic-light buttons in the hidden title bar.
@@ -41,6 +41,9 @@ struct HeaderView: View {
                         .allowsHitTesting(false)
                     Button { store.openPicker() } label: { ShortcutLabel(title: "Add strips", shortcut: "⌘O") }
                         .buttonStyle(InkButtonStyle())
+                    Button { store.openPicker(cartoonify: true) } label: { Text("Add Photos") }
+                        .buttonStyle(InkButtonStyle())
+                        .help("Add photos as black-and-white cartoons")
                     Button { store.removeCurrent() } label: { ShortcutLabel(title: "Remove", shortcut: "⌫") }
                         .buttonStyle(InkButtonStyle())
                 }
@@ -86,8 +89,10 @@ struct EmptyStateView: View {
                     .padding(.vertical, 4)
                     .background(Theme.paper)
                 HStack(spacing: 10) {
-                    Button { store.openPicker() } label: { ShortcutLabel(title: "Choose files", shortcut: "⌘O", size: 13) }
+                    Button { store.openPicker() } label: { ShortcutLabel(title: "Choose strips", shortcut: "⌘O", size: 13) }
                         .buttonStyle(InkButtonStyle(filled: true, fontSize: 13, hPad: 16, vPad: 12))
+                    Button { store.openPicker(cartoonify: true) } label: { Text("Turn photos into cartoons") }
+                        .buttonStyle(InkButtonStyle(fontSize: 13, hPad: 16, vPad: 12))
                     Button { store.loadSamples() } label: { Text("Try sample strips") }
                         .buttonStyle(InkButtonStyle(fontSize: 13, hPad: 16, vPad: 12))
                 }
