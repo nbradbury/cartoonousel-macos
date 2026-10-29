@@ -8,7 +8,7 @@ let package = Package(
         .executableTarget(
             name: "Cartoonousel",
             path: "Sources/Cartoonousel",
-            resources: [.copy("Resources/Fonts"), .copy("Resources/AppIcon.icns")]
+            resources: [.copy("Resources/Fonts"), .copy("Resources/AppIcon.icns"), .copy("Resources/SampleStrips")]
         )
     ]
 )

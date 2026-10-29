@@ -187,38 +187,14 @@ struct SlideCard: View {
     }
 
     @ViewBuilder private var content: some View {
-        switch strip.kind {
-        case .image:
-            if let image = store.image(for: strip) {
-                Image(nsImage: image)
-                    .resizable()
-                    .interpolation(.high)
-                    .aspectRatio(contentMode: .fit)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-            } else {
-                Hatch()
-            }
-        case .sample:
-            HStack(spacing: 10) {
-                ForEach(0..<(strip.panels ?? 1), id: \.self) { k in
-                    Hatch()
-                        .overlay(Rectangle().strokeBorder(Theme.ink, lineWidth: 3))
-                        .overlay(alignment: .bottomLeading) {
-                            Text("PANEL \(k + 1)")
-                                .font(Theme.mono(11))
-                                .tracking(11 * 0.06)
-                                .foregroundStyle(Theme.ink)
-                                .padding(.horizontal, 6)
-                                .padding(.vertical, 2)
-                                .background(Theme.hatchLight)
-                                .overlay(Rectangle().strokeBorder(Theme.ink, lineWidth: 1.5))
-                                .fixedSize()
-                                .padding(11) // 8pt inside the 3pt panel border
-                        }
-                        .clipped()
-                }
-            }
-            .padding(10)
+        if let image = store.image(for: strip) {
+            Image(nsImage: image)
+                .resizable()
+                .interpolation(.high)
+                .aspectRatio(contentMode: .fit)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+        } else {
+            Hatch()
         }
     }
 
