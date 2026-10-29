@@ -75,20 +75,20 @@ final class StripStore {
 
     // MARK: - Adding & removing
 
-    func openPicker() {
+    func openPicker(cartoonify: Bool = false) {
         let panel = NSOpenPanel()
-        panel.title = "Add strips"
+        panel.title = cartoonify ? "Add photos as cartoons" : "Add strips"
         panel.prompt = "Add"
         panel.allowsMultipleSelection = true
         panel.canChooseDirectories = false
         panel.allowedContentTypes = [.png, .jpeg, .gif, .webP, .image]
         guard panel.runModal() == .OK else { return }
-        addFiles(panel.urls)
+        addFiles(panel.urls, cartoonify: cartoonify)
     }
 
     /// Imports image files, ordered by name with numeric awareness ("strip-2" before "strip-10"),
-    /// and jumps to the first new one.
-    func addFiles(_ urls: [URL]) {
+    /// and jumps to the first new one. With `cartoonify`, each image is stored as a black-and-white cartoon.
+    func addFiles(_ urls: [URL], cartoonify: Bool = false) {
         let images = urls
             .filter { url in
                 let type = (try? url.resourceValues(forKeys: [.contentTypeKey]))?.contentType
@@ -101,18 +101,23 @@ final class StripStore {
         for url in images {
             let accessing = url.startAccessingSecurityScopedResource()
             defer { if accessing { url.stopAccessingSecurityScopedResource() } }
-            guard let size = Self.pixelSize(of: url), size.width > 0, size.height > 0 else { continue }
-
             let id = "img-\(Int(Date().timeIntervalSince1970 * 1000))-\(UUID().uuidString.prefix(5).lowercased())"
-            let ext = url.pathExtension.isEmpty ? "img" : url.pathExtension.lowercased()
-            let fileName = "\(id).\(ext)"
-            do {
-                try FileManager.default.copyItem(at: url, to: imagesFolder.appendingPathComponent(fileName))
-            } catch {
-                continue
+            let dest: URL
+            let size: CGSize
+            if cartoonify {
+                guard let cartoon = Cartoonizer.cartoon(from: url) else { continue }
+                dest = imagesFolder.appendingPathComponent("\(id).png")
+                guard (try? cartoon.png.write(to: dest)) != nil else { continue }
+                size = cartoon.size
+            } else {
+                guard let pixels = Self.pixelSize(of: url), pixels.width > 0, pixels.height > 0 else { continue }
+                let ext = url.pathExtension.isEmpty ? "img" : url.pathExtension.lowercased()
+                dest = imagesFolder.appendingPathComponent("\(id).\(ext)")
+                guard (try? FileManager.default.copyItem(at: url, to: dest)) != nil else { continue }
+                size = pixels
             }
             added.append(Strip(id: id, name: url.lastPathComponent,
-                               aspect: size.width / size.height, fileName: fileName))
+                               aspect: size.width / size.height, fileName: dest.lastPathComponent))
         }
         append(added)
     }

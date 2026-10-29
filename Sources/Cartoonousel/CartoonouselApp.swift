@@ -22,6 +22,8 @@ struct CartoonouselApp: App {
             CommandGroup(replacing: .newItem) {
                 Button("Add Strips…") { store.openPicker() }
                     .keyboardShortcut("o")
+                Button("Add Photos as Cartoons…") { store.openPicker(cartoonify: true) }
+                    .keyboardShortcut("o", modifiers: [.command, .shift])
                 Button("Try Sample Strips") { store.loadSamples() }
             }
             CommandMenu("Strip") {
