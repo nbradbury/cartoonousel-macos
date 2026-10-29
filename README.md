@@ -33,6 +33,7 @@ The design uses **Bricolage Grotesque** and **JetBrains Mono**. If they're insta
 - **Navigation:** drag (flicks move one strip), wheel/trackpad (one strip per gesture), ← → ↑ ↓ / space / Home / End, clicking a neighbour, or clicking a filmstrip thumb.
 - **Full screen:** click the current strip to show it full screen; click again or press Esc to close. The arrow keys still page through strips.
 - **Import:** ⌘O / *Add strips*, or drop files anywhere on the window. Files are sorted by name, numbers in order ("strip-2" before "strip-10").
+- **Cartoons:** *Add Photos* (header) or *Turn photos into cartoons* (empty state) turns photos into black-and-white cartoons as they're imported, using a bundled Core ML conversion of AnimeGANv2 (`celeba_distill` weights from [bryandlee/animegan2-pytorch](https://github.com/bryandlee/animegan2-pytorch), MIT; see `Resources/Cartoonizer-LICENSE.txt`). Photos run at up to 1024 px, about 0.3 s each on the CPU. Only the cartoon is kept; re-import with ⌘O for the original.
 - **Samples:** *Try sample strips* imports the comics bundled in `Sources/Cartoonousel/Resources/SampleStrips/`, the same way as importing files.
 - **Remove:** ⌫ / ⌦ / ⌘⌫ / *Remove*. This also deletes the app's copy of the image.
 - **Remove all:** ⌥⌘⌫ / *Strip → Remove All Strips…*, after a confirmation alert. This deletes the app's copies of every image.

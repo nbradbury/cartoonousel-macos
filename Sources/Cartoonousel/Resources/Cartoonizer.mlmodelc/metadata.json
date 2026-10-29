@@ -1,0 +1,88 @@
+[
+  {
+    "metadataOutputVersion" : "3.0",
+    "shortDescription" : "AnimeGANv2 (celeba_distill) photo-to-cartoon, via bryandlee\/animegan2-pytorch (MIT)",
+    "outputSchema" : [
+      {
+        "formattedType" : "Image (Color 1 × 1)",
+        "hasSizeFlexibility" : "1",
+        "shortDescription" : "",
+        "sizeRange" : "[[1, -1], [1, -1]]",
+        "width" : "1",
+        "type" : "Image",
+        "isColor" : "1",
+        "height" : "1",
+        "sizeFlexibility" : "1... × 1...",
+        "colorspace" : "RGB",
+        "name" : "cartoon",
+        "isOptional" : "0"
+      }
+    ],
+    "storagePrecision" : "Float16",
+    "modelParameters" : [
+
+    ],
+    "specificationVersion" : 8,
+    "mlProgramOperationTypeHistogram" : {
+      "Ios17.mul" : 2,
+      "Ios17.sqrt" : 24,
+      "Ios17.square" : 24,
+      "Ios17.sliceBySize" : 24,
+      "Ios17.sub" : 24,
+      "Ios17.conv" : 25,
+      "Shape" : 24,
+      "Ios17.concat" : 24,
+      "Ios17.add" : 29,
+      "Ios16.reduceMean" : 48,
+      "Ios17.realDiv" : 24,
+      "Ios17.batchNorm" : 24,
+      "Ios17.leakyRelu" : 20,
+      "Ios16.upsampleBilinear" : 2,
+      "Ios17.tanh" : 1,
+      "Ios17.clip" : 1,
+      "Ios17.reshape" : 48,
+      "Ios17.cast" : 2,
+      "Pad" : 16
+    },
+    "computePrecision" : "Mixed (Float16, Float32, Int32)",
+    "isUpdatable" : "0",
+    "stateSchema" : [
+
+    ],
+    "availability" : {
+      "macOS" : "14.0",
+      "tvOS" : "17.0",
+      "visionOS" : "1.0",
+      "watchOS" : "10.0",
+      "iOS" : "17.0",
+      "macCatalyst" : "17.0"
+    },
+    "modelType" : {
+      "name" : "MLModelType_mlProgram"
+    },
+    "inputSchema" : [
+      {
+        "formattedType" : "Image (Color 1024 × 1024)",
+        "hasSizeFlexibility" : "1",
+        "shortDescription" : "",
+        "sizeRange" : "[[64, 2048], [64, 2048]]",
+        "width" : "1024",
+        "type" : "Image",
+        "isColor" : "1",
+        "height" : "1024",
+        "sizeFlexibility" : "64...2048 × 64...2048",
+        "colorspace" : "RGB",
+        "name" : "image",
+        "isOptional" : "0"
+      }
+    ],
+    "userDefinedMetadata" : {
+      "com.github.apple.coremltools.conversion_date" : "2026-10-29",
+      "com.github.apple.coremltools.source" : "torch==2.15.0",
+      "com.github.apple.coremltools.version" : "9.0",
+      "com.github.apple.coremltools.source_dialect" : "TorchScript"
+    },
+    "generatedClassName" : "Cartoonizer",
+    "method" : "predict"
+  }
+]
