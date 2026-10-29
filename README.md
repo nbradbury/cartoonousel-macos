@@ -33,6 +33,7 @@ The design uses **Bricolage Grotesque** and **JetBrains Mono**. If they're insta
 - **Navigation:** drag (flicks move one strip), wheel/trackpad (one strip per gesture), ← → ↑ ↓ / space / Home / End, clicking a neighbour, or clicking a filmstrip thumb.
 - **Import:** ⌘O / *Add strips*, or drop files anywhere on the window. Files are sorted by name, numbers in order ("strip-2" before "strip-10").
 - **Remove:** ⌫ / ⌦ / ⌘⌫ / *Remove*. This also deletes the app's copy of the image.
+- **Remove all:** ⌥⌘⌫ / *Strip → Remove All Strips…*, after a confirmation alert. This deletes the app's copies of every image.
 - **Tweaks:** the design's props (splats, wobble, auto-advance, filmstrip) live in **Settings (⌘,)**.
 - **Persistence:** the design used `localStorage`. Here, imported images are copied into `~/Library/Application Support/Cartoonousel/Strips/`, and the list and index go in `state.json` beside that folder.
 - The PRNG and hash are bit-exact ports, so the background splats and per-strip tilts match the web version.

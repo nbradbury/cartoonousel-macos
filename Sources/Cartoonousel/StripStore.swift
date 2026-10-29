@@ -142,6 +142,26 @@ final class StripStore {
         save()
     }
 
+    /// Asks for confirmation, then removes every strip along with the app's copies of the images.
+    func confirmRemoveAll() {
+        guard !strips.isEmpty else { return }
+        let alert = NSAlert()
+        alert.messageText = "Remove all strips?"
+        alert.informativeText = "This removes all \(strips.count) strips and deletes the app's copies of their images."
+        alert.alertStyle = .warning
+        alert.addButton(withTitle: "Remove All").hasDestructiveAction = true
+        alert.addButton(withTitle: "Cancel")
+        guard alert.runModal() == .alertFirstButtonReturn else { return }
+
+        for file in strips.compactMap(\.fileName) {
+            try? FileManager.default.removeItem(at: imagesFolder.appendingPathComponent(file))
+        }
+        imageCache.removeAll()
+        strips.removeAll()
+        index = 0
+        save()
+    }
+
     private func append(_ list: [Strip]) {
         guard !list.isEmpty else { return }
         lastAct = Date()

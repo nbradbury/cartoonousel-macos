@@ -37,6 +37,9 @@ struct CartoonouselApp: App {
                 Button("Remove Strip") { store.removeCurrent() }
                     .keyboardShortcut(.delete, modifiers: .command)
                     .disabled(store.strips.isEmpty)
+                Button("Remove All Strips…") { store.confirmRemoveAll() }
+                    .keyboardShortcut(.delete, modifiers: [.command, .option])
+                    .disabled(store.strips.isEmpty)
             }
         }
 
