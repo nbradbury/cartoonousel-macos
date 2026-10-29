@@ -2,8 +2,9 @@
 
 A native SwiftUI carousel for comic strips set on an ink-splat backdrop.
 
-<img width="1392" height="932" alt="1" src="https://github.com/user-attachments/assets/fb9597eb-1033-4848-9107-b43bc5cfec45" />
-<img width="1392" height="932" alt="2" src="https://github.com/user-attachments/assets/1097f4f5-16a2-41a1-9815-85d9ebe5e8bb" />
+<img width="1336" height="976" alt="1" src="https://github.com/user-attachments/assets/54248e56-a4b9-4484-a86e-3b055a3082e4" />
+<img width="1336" height="976" alt="2" src="https://github.com/user-attachments/assets/3f4b3a42-a905-4715-aabd-0f837668d873" />
+
 
 ## Run
 
