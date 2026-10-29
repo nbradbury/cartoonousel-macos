@@ -108,7 +108,7 @@ struct CarouselView: View {
                     .opacity(ar > 2.6 ? 0 : 1)
                     .zIndex(100 - (ar * 10).rounded())
                     .onTapGesture {
-                        if i != store.index { store.go(i) }
+                        if i != store.index { store.go(i) } else { store.viewing = true }
                     }
             }
         }
@@ -210,6 +210,27 @@ struct SlideCard: View {
         .padding(.vertical, 8)
         .background(Theme.paper)
         .overlay(Rectangle().strokeBorder(Theme.ink, lineWidth: 2))
+    }
+}
+
+/// The current strip filling the window. Click or Esc closes it; the arrow keys still page.
+struct StripViewer: View {
+    let strip: Strip
+    @Environment(StripStore.self) private var store
+
+    var body: some View {
+        ZStack {
+            Theme.paper
+            if let image = store.image(for: strip) {
+                Image(nsImage: image)
+                    .resizable()
+                    .interpolation(.high)
+                    .aspectRatio(contentMode: .fit)
+                    .padding(32)
+            }
+        }
+        .contentShape(Rectangle())
+        .onTapGesture { store.viewing = false }
     }
 }
 

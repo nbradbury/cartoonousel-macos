@@ -31,6 +31,7 @@ The design uses **Bricolage Grotesque** and **JetBrains Mono**. If they're insta
 ## Mapping from the design
 
 - **Navigation:** drag (flicks move one strip), wheel/trackpad (one strip per gesture), ← → ↑ ↓ / space / Home / End, clicking a neighbour, or clicking a filmstrip thumb.
+- **Full screen:** click the current strip to show it full screen; click again or press Esc to close. The arrow keys still page through strips.
 - **Import:** ⌘O / *Add strips*, or drop files anywhere on the window. Files are sorted by name, numbers in order ("strip-2" before "strip-10").
 - **Samples:** *Try sample strips* imports the comics bundled in `Sources/Cartoonousel/Resources/SampleStrips/`, the same way as importing files.
 - **Remove:** ⌫ / ⌦ / ⌘⌫ / *Remove*. This also deletes the app's copy of the image.
