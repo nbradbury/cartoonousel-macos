@@ -50,6 +50,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         // Needed when launched as a bare SwiftPM executable (`swift run`) rather than an .app bundle.
         NSApp.setActivationPolicy(.regular)
+        if let url = Bundle.module.url(forResource: "AppIcon", withExtension: "icns") {
+            NSApp.applicationIconImage = NSImage(contentsOf: url)
+        }
         NSApp.activate(ignoringOtherApps: true)
     }
 
