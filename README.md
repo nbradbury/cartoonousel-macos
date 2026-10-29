@@ -1,4 +1,4 @@
-# <img src="docs/icon.png" alt="" width="48" align="center"> Cartoonousel (macOS)
+# <img src="docs/icon.png" alt="" width="48" align="absmiddle"> Cartoonousel (macOS)
 
 A native SwiftUI carousel for comic strips set on an ink-splat backdrop.
 
