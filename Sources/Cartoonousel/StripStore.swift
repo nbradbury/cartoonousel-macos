@@ -23,6 +23,8 @@ final class StripStore {
     private(set) var index = 0
     /// Fractional carousel position while the user is dragging; nil otherwise.
     var dragPos: Double?
+    /// Whether the current strip is shown full screen.
+    var viewing = false
 
     /// Last time the user navigated; auto-advance waits for this to go quiet.
     @ObservationIgnored var lastAct = Date()
@@ -131,6 +133,7 @@ final class StripStore {
         imageCache[strip.id] = nil
         strips.remove(at: index)
         index = max(0, min(index, strips.count - 1))
+        if strips.isEmpty { viewing = false }
         save()
     }
 
@@ -151,6 +154,7 @@ final class StripStore {
         imageCache.removeAll()
         strips.removeAll()
         index = 0
+        viewing = false
         save()
     }
 

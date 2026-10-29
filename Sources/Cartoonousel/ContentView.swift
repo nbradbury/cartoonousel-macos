@@ -20,6 +20,7 @@ struct ContentView: View {
     @State private var input = InputMonitor()
     @State private var dropTargeted = false
     @State private var dropCount = 0
+    @State private var enteredFullScreen = false
 
     private let ticker = Timer.publish(every: 0.25, on: .main, in: .common).autoconnect()
 
@@ -55,9 +56,14 @@ struct ContentView: View {
                     Spacer()
                 }
 
+                if store.viewing, let strip = store.current {
+                    StripViewer(strip: strip).transition(.opacity)
+                }
+
                 DropOverlay(visible: dropTargeted, count: dropCount, width: size.width)
             }
             .frame(width: size.width, height: size.height)
+            .animation(.easeOut(duration: 0.2), value: store.viewing)
         }
         .ignoresSafeArea()
         .background(WindowReader { input.window = $0 })
@@ -68,8 +74,22 @@ struct ContentView: View {
         }
         .onDisappear { input.uninstall() }
         .onChange(of: heroKey) { _, _ in splats.newHero(empty: store.strips.isEmpty) }
+        .onChange(of: store.viewing) { _, viewing in setFullScreen(viewing) }
         .onReceive(ticker) { _ in store.autoAdvanceIfIdle(seconds: autoAdvance) }
         .frame(minWidth: 720, minHeight: 480)
+    }
+
+    /// Enters macOS full screen for the viewer, and leaves it afterwards only if the viewer entered it.
+    private func setFullScreen(_ on: Bool) {
+        guard let window = input.window else { return }
+        let isFull = window.styleMask.contains(.fullScreen)
+        if on, !isFull {
+            enteredFullScreen = true
+            window.toggleFullScreen(nil)
+        } else if !on, enteredFullScreen {
+            enteredFullScreen = false
+            if isFull { window.toggleFullScreen(nil) }
+        }
     }
 }
 
@@ -174,6 +194,7 @@ final class InputMonitor {
         case 115: store.first()                   // Home
         case 119: store.last()                    // End
         case 51, 117: store.removeCurrent()       // ⌫ ⌦
+        case 53 where store.viewing: store.viewing = false  // Esc
         default: return false
         }
         return true
