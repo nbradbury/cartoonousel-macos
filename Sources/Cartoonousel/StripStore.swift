@@ -4,16 +4,12 @@ import Observation
 import UniformTypeIdentifiers
 
 struct Strip: Codable, Identifiable, Equatable {
-    enum Kind: String, Codable { case image, sample }
-
     var id: String
-    var kind: Kind
     var name: String
     /// width / height
     var aspect: Double
-    /// Number of placeholder panels (sample strips only).
-    var panels: Int?
-    /// File name inside the library folder (image strips only).
+    /// File name inside the library folder. Optional because strips saved by older builds
+    /// (placeholder samples) have none; `load()` drops those.
     var fileName: String?
 }
 
@@ -31,8 +27,6 @@ final class StripStore {
     /// Last time the user navigated; auto-advance waits for this to go quiet.
     @ObservationIgnored var lastAct = Date()
     @ObservationIgnored private var imageCache: [String: NSImage] = [:]
-
-    static let sampleShape = [3, 4, 2, 3, 1, 5]
 
     private let folder: URL
     private var imagesFolder: URL { folder.appendingPathComponent("Strips", isDirectory: true) }
@@ -115,20 +109,18 @@ final class StripStore {
             } catch {
                 continue
             }
-            added.append(Strip(id: id, kind: .image, name: url.lastPathComponent,
+            added.append(Strip(id: id, name: url.lastPathComponent,
                                aspect: size.width / size.height, fileName: fileName))
         }
         append(added)
     }
 
+    /// Imports the strips bundled in Resources/SampleStrips, like any other files.
     func loadSamples() {
-        let stamp = Int(Date().timeIntervalSince1970 * 1000)
-        let list = Self.sampleShape.enumerated().map { i, n in
-            Strip(id: "sample-\(i + 1)-\(stamp)", kind: .sample,
-                  name: String(format: "sample-strip-%02d.png", i + 1),
-                  aspect: n == 1 ? 0.82 : Double(n) * 1.02, panels: n)
-        }
-        append(list)
+        guard let folder = Bundle.module.url(forResource: "SampleStrips", withExtension: nil),
+              let urls = try? FileManager.default.contentsOfDirectory(at: folder, includingPropertiesForKeys: nil)
+        else { return }
+        addFiles(urls)
     }
 
     func removeCurrent() {
@@ -206,7 +198,7 @@ final class StripStore {
               let saved = try? JSONDecoder().decode(Saved.self, from: data) else { return }
         let fm = FileManager.default
         strips = saved.strips.filter { strip in
-            guard let file = strip.fileName else { return strip.kind == .sample }
+            guard let file = strip.fileName else { return false }
             return fm.fileExists(atPath: imagesFolder.appendingPathComponent(file).path)
         }
         index = strips.isEmpty ? 0 : max(0, min(saved.index, strips.count - 1))

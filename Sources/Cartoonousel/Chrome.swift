@@ -145,7 +145,7 @@ struct FilmstripView: View {
             let w = (min(130, max(32, 42 * strip.aspect))).rounded()
             ZStack {
                 Hatch(stripe: 4)
-                if strip.kind == .image, let image = store.image(for: strip) {
+                if let image = store.image(for: strip) {
                     Image(nsImage: image)
                         .resizable()
                         .aspectRatio(contentMode: .fill)
